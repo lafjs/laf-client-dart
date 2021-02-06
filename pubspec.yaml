@@ -1,0 +1,8 @@
+name: less_api_client
+version: 0.0.1
+description: Dart Client of less-api.
+homepage: https://www.github.com/Maslow/less-api-client-dart
+
+dependencies:
+dev_dependencies:
+  test:
