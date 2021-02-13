@@ -33,11 +33,11 @@ class Db {
   }
 
   /**
-   * 创建集合
+   * 创建集合(暂不需要)
    */
-  createCollection(String collName) {
-    final params = Param(collName);
+  // createCollection(String collName) {
+  //   final params = Param(collName);
 
-    return request.send(ActionType.ADD_COLLECTION, params);
-  }
+  //   return request.send(ActionType.ADD_COLLECTION, params);
+  // }
 }

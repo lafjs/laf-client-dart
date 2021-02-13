@@ -1,5 +1,4 @@
 import 'package:less_api_client/database/query.dart';
-
 import 'index.dart';
 
 /**
@@ -12,5 +11,10 @@ class CollectionReference extends Query {
    * @param db    - 数据库的引用
    * @param coll  - 集合名称
    */
-  CollectionReference(Db db, String coll) : super(db, coll) {}
+  CollectionReference(Db db, String coll) : super(db, coll);
+
+  /**
+   * 读取集合名字
+   */
+  get name => collectionName;
 }

@@ -1,10 +1,8 @@
-import 'package:less_api_client/database/collection.dart';
+
 import 'package:less_api_client/database/index.dart';
 import 'package:less_api_client/database/param.dart';
-import 'package:less_api_client/database/query.dart';
 import 'package:less_api_client/database/types.dart';
 import "package:test/test.dart";
-import '../utils.dart';
 import '_request.dart';
 
 // pub run test tests/db/where_test.dart
@@ -44,10 +42,10 @@ void main() {
       print((param.query as Map).keys);
 
       expect(param.collectionName, "categories");
-      expect(param.query, {'id': 0});
+      expect(param.query, {'id': 0, 'age': {'\$gt': 0, '\$lt': 10}});
 
       final json_param = param.toJson();
-      expect(json_param['query'], {'id': 0});
+      expect(json_param['query'], {'id': 0, 'age': {'\$gt': 0, '\$lt': 10}});
       expect(json_param['query']['id'], 0);
     });
   });

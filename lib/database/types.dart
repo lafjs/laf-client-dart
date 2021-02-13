@@ -24,17 +24,21 @@ class UpdateResult extends BaseQueryResult {
   final int updated;
   final int matched;
   final int upsertedId;
-  UpdateResult(String requestId, this.updated, this.matched, this.upsertedId) : super(requestId);
+  UpdateResult(String requestId, this.updated, this.matched, this.upsertedId)
+      : super(requestId);
 }
 
 // add 操作返回结果
 class AddResult extends BaseQueryResult {
-  AddResult(String requestId) : super(requestId);
+  final dynamic id;
+  final int insertedCount;
+  AddResult(String requestId, this.id, this.insertedCount) : super(requestId);
 }
 
 // remove 操作返回结果
 class RemoveResult extends BaseQueryResult {
-  RemoveResult(String requestId) : super(requestId);
+  final int deleted;
+  RemoveResult(String requestId, this.deleted) : super(requestId);
 }
 
 // count 操作返回结果
@@ -48,4 +52,6 @@ class ActionType {
   static const QEURY_DOCUMENT = "database.queryDocument";
   static const COUNT_DOCUMENT = "database.countDocument";
   static const UPDATE_DOCUMENT = "database.updateDocument";
+  static const REMOVE_DOCUMENT = "database.deleteDocument";
+  static const ADD_DOCUMENT = "database.addDocument";
 }

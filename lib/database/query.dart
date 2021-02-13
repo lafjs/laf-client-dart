@@ -14,6 +14,8 @@ class Query {
   // Collection name
   final String _coll;
 
+  String get collectionName => _coll;
+
   // 过滤条件
   Object _fieldFitlers;
 
@@ -190,13 +192,14 @@ class Query {
   }
 
   /**
-   * @TODO
-   * 发起请求批量更新文档
+   * 发起请求更新文档
    *
    * @param data 数据
    */
-  Future<UpdateResult> update(Object data) async {
-    final param = UpdateParam(_coll, this._fieldFitlers, data, true);
+  Future<UpdateResult> update(Object data, {bool multi: false}) async {
+    assert(data, 'Query::update() data cannot be null object');
+
+    final param = UpdateParam(_coll, this._fieldFitlers, data, multi);
 
     final res = await _request.send(ActionType.UPDATE_DOCUMENT, param);
     if (res.code != 0) {
@@ -211,8 +214,40 @@ class Query {
   }
 
   /*
-   * @TODO
    * 条件删除文档
    */
-  Future<RemoveResult> remove() async {}
+  Future<RemoveResult> remove({bool multi: false}) async {
+    final param = RemoveParam(_coll, this._fieldFitlers, multi);
+
+    final res = await _request.send(ActionType.REMOVE_DOCUMENT, param);
+
+    if (res.code != 0) {
+      return res.data;
+    }
+
+    int deleted = res.data['deleted'];
+    final ret = RemoveResult(res.requestId, deleted);
+    return ret;
+  }
+
+  /**
+   * 添加一篇文档
+   *
+   * @param data - 数据
+   */
+  Future<AddResult> add(Object data) async {
+    assert(data, 'Query::update() data cannot be null object');
+
+    final param = AddParam(_coll, data);
+
+    final res = await _request.send(ActionType.ADD_DOCUMENT, param);
+    if (res.code != 0) {
+      return res.data;
+    }
+
+    final id = res.data['_id'];
+    int insertedCount = res.data['insertedCount'];
+    final ret = AddResult(res.requestId, id, insertedCount);
+    return ret;
+  }
 }

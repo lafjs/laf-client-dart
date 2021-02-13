@@ -117,8 +117,10 @@ class UpdateParam extends QueryParam {
 
   @override
   Map<String, dynamic> toJson() {
-    // TODO: implement toJson
-    return super.toJson();
+    final ret = super.toJson();
+    ret['data'] = data;
+    ret['multi'] = multi;
+    return ret;
   }
 
   static UpdateParam fromJson(_data) {
@@ -126,5 +128,45 @@ class UpdateParam extends QueryParam {
 
     return new UpdateParam(
         _data['collectionName'], _data['query'], _data['data'], _data['multi']);
+  }
+}
+
+// 删除数据参数
+class RemoveParam extends QueryParam {
+  // 是否允许批量操作，还是单条操作
+  bool multi;
+
+  RemoveParam(String collectionName, Object query, bool multi)
+      : super(collectionName, query) {
+    this.multi = multi;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final ret = super.toJson();
+    ret['multi'] = multi;
+    return ret;
+  }
+
+  static RemoveParam fromJson(_data) {
+    assert(_data['collectionName'] != null, 'collectionName cannot be empty');
+
+    return new RemoveParam(
+        _data['collectionName'], _data['query'], _data['multi']);
+  }
+}
+
+// 添加数据参数
+class AddParam  extends Param{
+  Object data;
+  AddParam(String collectionName, this.data): super(collectionName);
+
+  static AddParam fromJson(data) {
+    assert(data['collectionName'] != null, 'collectionName cannot be empty');
+    return AddParam(data['collectionName'], data['data']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"collectionName": collectionName, "data": data};
   }
 }
