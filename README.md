@@ -6,7 +6,7 @@ Flutter client sdk of [`less-api`](https://github.com/Maslow/less-api).
 ### 安装
 
 ```sh
-    flutter pub get install less-api-client
+    flutter pub get install less_api_client
 ```
 
 ### 使用示例
