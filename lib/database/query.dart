@@ -124,12 +124,14 @@ class Query {
    * @param field       - 字段名
    * @param direction   - 排序方式
    */
-  Query orderBy(String field, Direction direction) {
-    final newOrder = QueryOrder(field, direction: direction);
-    List<QueryOrder> combinedOrders = [newOrder];
+  Query orderBy(String field, {Direction direction: Direction.ASC}) {
+    List<QueryOrder> combinedOrders = [];
     if (_fieldOrders != null && _fieldOrders.length > 0) {
       combinedOrders.addAll(_fieldOrders);
     }
+
+    final newOrder = QueryOrder(field, direction: direction);
+    combinedOrders.add(newOrder);
 
     return new Query(_db, _coll,
         fieldFitlers: this._fieldFitlers,

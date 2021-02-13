@@ -85,7 +85,8 @@ class QueryParam extends Param {
   Map<String, dynamic> toJson() {
     assert(collectionName.isNotEmpty, 'collectionName cannot be empty');
 
-    final _orders = order == null ? null : order.map((o) => o.toJson());
+    final _orders =
+        order == null ? null : order.map((o) => o.toJson()).toList();
 
     Map<String, dynamic> param = {
       "collectionName": collectionName,

@@ -22,10 +22,8 @@ void main() {
       assert(coll is CollectionReference);
       assert(coll is Query);
     });
-  });
 
-  group("class Query", () {
-    test("collection().get() passed", () async {
+        test("collection().get() passed", () async {
       final req = new TestRequest();
       final db = new Db(req);
       final coll = db.collection("categories");
@@ -65,5 +63,6 @@ void main() {
       expect(param.limit, null);
       expect(param.projection, null);
     });
+
   });
 }
