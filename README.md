@@ -5,8 +5,19 @@ Flutter client sdk of [`less-api`](https://github.com/Maslow/less-api).
 
 ### 安装
 
+请前往 pub.dev 查看[最新的 less_api_client 版本](https://pub.dev/packages/less_api_client).
+
+在 pubspec.yaml 中添加依赖： 
+
+```yaml
+dependencies:
+    less_api_client: ^0.0.4
+
+```
+
+通常IDE会自动执行更新依赖，或手动更新依赖：
 ```sh
-    flutter pub get install less_api_client
+  flutter pub get
 ```
 
 ### 使用示例
