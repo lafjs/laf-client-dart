@@ -1,13 +1,14 @@
 name: less_api_client
-version: 0.0.2
+version: 0.0.4
 description: Flutter/Dart Client of less-api.
 homepage: https://www.github.com/Maslow/less-api-client-dart
 
 dependencies:
   dio: ^3.0.10
-  
+
+
 dev_dependencies:
   test:
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>2.4.0 <3.0.0'

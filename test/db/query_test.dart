@@ -6,7 +6,7 @@ import 'package:less_api_client/database/types.dart';
 import "package:test/test.dart";
 import '_request.dart';
 
-// pub run test tests/db/query_test.dart
+// pub run test test/db/query_test.dart
 void main() {
   group("class Query", () {
     test('Query.field', () async {

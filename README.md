@@ -54,3 +54,32 @@ final removed = await db.collection('articles')
     .where({ "id": 1 })
     .remove()
 ```
+
+
+### 运行测试
+
+
+#### unit test
+```sh
+pub run test test/db/*test.dart
+```
+
+#### http test
+
+> TIP: 运行此测试之前，需要自行跑起一个可用的 less-api server 服务!!
+
+```sh
+pub run test test/http/*test.dart
+
+# 删除数据的用例需要单独运行， 不然会影响其它操作的结果
+pub run test test/http/remove.t.dart
+```
+
+#### all tests
+
+```sh
+pub run test test/**/*test.dart
+
+# 删除数据的用例需要单独运行， 不然会影响其它操作的结果
+pub run test test/http/remove.t.dart
+```

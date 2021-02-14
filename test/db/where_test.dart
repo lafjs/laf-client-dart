@@ -5,7 +5,7 @@ import 'package:less_api_client/database/types.dart';
 import "package:test/test.dart";
 import '_request.dart';
 
-// pub run test tests/db/where_test.dart
+// pub run test test/db/where_test.dart
 void main() {
   group("Query.where()", () {
     final req = new TestRequest();

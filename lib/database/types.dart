@@ -9,42 +9,49 @@ class ResponseResult<T> {
 
 // 数据操作返回结果基类
 abstract class BaseQueryResult {
-  final String requestId;
-  BaseQueryResult(this.requestId);
+  final ResponseResult res;
+  String get requestId => res.requestId;
+  bool get ok => res.code == 0;
+  dynamic get error {
+    return ok ? null : res.data;
+  }
+
+  BaseQueryResult(this.res);
 }
 
 // get 操作返回结果
 class GetResult extends BaseQueryResult {
-  List<dynamic> data;
-  GetResult(String requestId, this.data) : super(requestId);
+  List<dynamic> get data => res.data['list'];
+  GetResult(ResponseResult res) : super(res);
 }
 
 // update 操作返回结果
 class UpdateResult extends BaseQueryResult {
-  final int updated;
-  final int matched;
-  final int upsertedId;
-  UpdateResult(String requestId, this.updated, this.matched, this.upsertedId)
-      : super(requestId);
+  int get updated => res.data['updated'];
+  int get matched => res.data['matched'];
+  int get upsertedId => res.data['upsertedId'];
+
+  UpdateResult(ResponseResult res) : super(res);
 }
 
 // add 操作返回结果
 class AddResult extends BaseQueryResult {
-  final dynamic id;
-  final int insertedCount;
-  AddResult(String requestId, this.id, this.insertedCount) : super(requestId);
+  get id => res.data['_id'];
+  int get insertedCount => res.data['insertedCount'];
+  AddResult(ResponseResult res) : super(res);
 }
 
 // remove 操作返回结果
 class RemoveResult extends BaseQueryResult {
-  final int deleted;
-  RemoveResult(String requestId, this.deleted) : super(requestId);
+  int get deleted => res.data['deleted'];
+
+  RemoveResult(ResponseResult res) : super(res);
 }
 
 // count 操作返回结果
 class CountResult extends BaseQueryResult {
-  final int total;
-  CountResult(String requestId, this.total) : super(requestId);
+  int get total => res.data['total'];
+  CountResult(ResponseResult res) : super(res);
 }
 
 class ActionType {

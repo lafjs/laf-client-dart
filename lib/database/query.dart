@@ -79,12 +79,8 @@ class Query {
     );
 
     final res = await _request.send(ActionType.QEURY_DOCUMENT, param);
-    if (res.code != 0) {
-      return res.data;
-    }
 
-    GetResult ret = GetResult(res.requestId, res.data['list']);
-    return ret;
+    return GetResult(res);
   }
 
   /**
@@ -94,12 +90,8 @@ class Query {
     final param = QueryParam(_coll, this._fieldFitlers);
 
     final res = await _request.send(ActionType.COUNT_DOCUMENT, param);
-    if (res.code != 0) {
-      return res.data;
-    }
 
-    CountResult ret = CountResult(res.requestId, res.data['total']);
-    return ret;
+    return CountResult(res);
   }
 
   /**
@@ -197,20 +189,13 @@ class Query {
    * @param data 数据
    */
   Future<UpdateResult> update(Object data, {bool multi: false}) async {
-    assert(data, 'Query::update() data cannot be null object');
+    assert(data != null, 'Query::update() data cannot be null object');
 
-    final param = UpdateParam(_coll, this._fieldFitlers, data, multi);
+    final param =
+        UpdateParam(_coll, this._fieldFitlers, _buildUpdateData(data), multi);
 
     final res = await _request.send(ActionType.UPDATE_DOCUMENT, param);
-    if (res.code != 0) {
-      return res.data;
-    }
-
-    int updated = res.data['updated'];
-    int matched = res.data['matched'];
-    int upsertedId = res.data['upsertedId'];
-    final ret = UpdateResult(res.requestId, updated, matched, upsertedId);
-    return ret;
+    return UpdateResult(res);
   }
 
   /*
@@ -221,13 +206,7 @@ class Query {
 
     final res = await _request.send(ActionType.REMOVE_DOCUMENT, param);
 
-    if (res.code != 0) {
-      return res.data;
-    }
-
-    int deleted = res.data['deleted'];
-    final ret = RemoveResult(res.requestId, deleted);
-    return ret;
+    return RemoveResult(res);
   }
 
   /**
@@ -236,18 +215,25 @@ class Query {
    * @param data - 数据
    */
   Future<AddResult> add(Object data) async {
-    assert(data, 'Query::update() data cannot be null object');
+    assert(data != null, 'Query::update() data cannot be null object');
 
     final param = AddParam(_coll, data);
 
     final res = await _request.send(ActionType.ADD_DOCUMENT, param);
-    if (res.code != 0) {
-      return res.data;
+
+    return AddResult(res);
+  }
+
+  Object _buildUpdateData(Object raw) {
+    final update_opeartors = Set.from(["\$set", '\$unset', '\$inc', '\$mul']);
+
+    final noOperator =
+        (raw as Map).keys.every((key) => !update_opeartors.contains(key));
+
+    if (noOperator) {
+      return {"\$set": raw};
     }
 
-    final id = res.data['_id'];
-    int insertedCount = res.data['insertedCount'];
-    final ret = AddResult(res.requestId, id, insertedCount);
-    return ret;
+    return raw;
   }
 }

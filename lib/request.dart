@@ -21,10 +21,11 @@ class Request implements CloudRequestInterface {
 
   @override
   Future<ResponseResult> send(String action, Param param) async {
+    param.action = action;
     final res = await _http.post(this.entryUrl, data: param.toJson());
     final res_data = res.data;
-    final ret =
-        ResponseResult(res_data?.code, res_data['data'], res_data?.requestId);
+    final ret = ResponseResult(
+        res_data['code'], res_data['data'], res_data['requestId']);
     return ret;
   }
 
@@ -40,7 +41,7 @@ class Request implements CloudRequestInterface {
       InterceptorsWrapper(
         onRequest: (RequestOptions options) async {
           final auth = options.headers['Authorization'];
-          if (auth == null || auth == "") {
+          if (getTokenFunction != null && (auth == null || auth == "")) {
             final token = await getTokenFunction();
             options.headers['Authorization'] = "Bearer $token";
           }
@@ -49,6 +50,7 @@ class Request implements CloudRequestInterface {
           _log('             | baseUrl: ' + options.baseUrl);
           _log('             | contentType: ' + options.contentType);
           _log('             | query: ' + options.queryParameters.toString());
+          _log('             | data: ' + options.data.toString());
           _log('             | headers: ' + options.headers.toString());
 
           // Do something before request is sent

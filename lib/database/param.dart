@@ -24,15 +24,16 @@ class QueryOrder {
 
 class Param {
   String collectionName;
-  Param(this.collectionName);
+  String action;
+  Param(this.collectionName, {this.action});
 
   static Param fromJson(data) {
     assert(data['collectionName'] != null, 'collectionName cannot be empty');
-    return Param(data['collectionName']);
+    return Param(data['collectionName'], action: data['action']);
   }
 
   Map<String, dynamic> toJson() {
-    return {"collectionName": collectionName};
+    return {"collectionName": collectionName, action: action};
   }
 }
 
@@ -90,11 +91,12 @@ class QueryParam extends Param {
 
     Map<String, dynamic> param = {
       "collectionName": collectionName,
+      "action": action,
       "query": query ?? null,
       "order": _orders,
       "offset": offset ?? null,
       "limit": limit ?? null,
-      "projection": projection ?? null
+      "projection": projection ?? null,
     };
     return param;
   }
@@ -104,8 +106,8 @@ class QueryParam extends Param {
 class UpdateParam extends QueryParam {
   // 是否允许批量操作，还是单条操作
   bool multi;
-  // 是更新还是替换
-  bool merge;
+  // 是更新还是替换，默认为更新, 暂不考虑实现替换
+  bool merge = true;
 
   Object data;
 
@@ -120,6 +122,8 @@ class UpdateParam extends QueryParam {
     final ret = super.toJson();
     ret['data'] = data;
     ret['multi'] = multi;
+    ret['action'] = action;
+    ret['merge'] = merge;
     return ret;
   }
 
@@ -145,6 +149,7 @@ class RemoveParam extends QueryParam {
   Map<String, dynamic> toJson() {
     final ret = super.toJson();
     ret['multi'] = multi;
+    ret['action'] = action;
     return ret;
   }
 
@@ -157,9 +162,9 @@ class RemoveParam extends QueryParam {
 }
 
 // 添加数据参数
-class AddParam  extends Param{
+class AddParam extends Param {
   Object data;
-  AddParam(String collectionName, this.data): super(collectionName);
+  AddParam(String collectionName, this.data) : super(collectionName);
 
   static AddParam fromJson(data) {
     assert(data['collectionName'] != null, 'collectionName cannot be empty');
@@ -167,6 +172,6 @@ class AddParam  extends Param{
   }
 
   Map<String, dynamic> toJson() {
-    return {"collectionName": collectionName, "data": data};
+    return {"collectionName": collectionName, "data": data, "action": action};
   }
 }

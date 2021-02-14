@@ -7,7 +7,7 @@ import "package:test/test.dart";
 import '../utils.dart';
 import '_request.dart';
 
-// pub run test tests/db/db_test.dart
+// pub run test test/db/db_test.dart
 void main() {
   group('class Db', () {
     test("constructor passed", () {
